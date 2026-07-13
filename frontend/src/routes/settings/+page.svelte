@@ -295,7 +295,7 @@
           <p class="text-xs text-red-400/80 mt-1">{ollamaError || 'Cannot reach Ollama. Is the container running?'}</p>
         {:else}
           <p class="text-xs text-zinc-600 mt-1">
-            Pull a model: <code class="text-zinc-500">docker exec rss-reader-ollama-1 ollama pull qwen3.5:9b</code>
+            Pull a model: <code class="text-zinc-500">docker exec readr-ollama-1 ollama pull qwen3.5:9b</code>
           </p>
         {/if}
       </div>

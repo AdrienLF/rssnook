@@ -240,7 +240,7 @@
           </ul>
           <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 text-xs space-y-2">
             <p class="font-medium text-zinc-300">Pulling a model manually</p>
-            <code class="block text-violet-300">docker exec rss-reader-ollama-1 ollama pull qwen3:8b</code>
+            <code class="block text-violet-300">docker exec readr-ollama-1 ollama pull qwen3.5:9b</code>
             <p class="text-zinc-500">The model must be pulled before Readr can generate digests or summaries.</p>
           </div>
         </div>

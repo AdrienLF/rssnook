@@ -18,7 +18,7 @@ async def get_settings(db: AsyncSession = Depends(get_db)):
     data = {r.key: r.value for r in rows}
     return SettingsResponse(
         digest_time=data.get("digest_time", "07:00"),
-        ollama_model=data.get("ollama_model", "qwen3:8b"),
+        ollama_model=data.get("ollama_model", "qwen3.5:9b"),
         fetch_interval=int(data.get("fetch_interval", "3600")),
         article_retention_days=int(data.get("article_retention_days", "14")),
     )
