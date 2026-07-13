@@ -20,6 +20,7 @@ async def get_settings(db: AsyncSession = Depends(get_db)):
         digest_time=data.get("digest_time", "07:00"),
         ollama_model=data.get("ollama_model", "qwen3:8b"),
         fetch_interval=int(data.get("fetch_interval", "3600")),
+        article_retention_days=int(data.get("article_retention_days", "14")),
     )
 
 
@@ -33,6 +34,8 @@ async def update_settings(payload: SettingsUpdate, db: AsyncSession = Depends(ge
         updates["ollama_model"] = payload.ollama_model
     if payload.fetch_interval is not None:
         updates["fetch_interval"] = str(payload.fetch_interval)
+    if payload.article_retention_days is not None:
+        updates["article_retention_days"] = str(payload.article_retention_days)
 
     for key, value in updates.items():
         row = await db.get(Setting, key)

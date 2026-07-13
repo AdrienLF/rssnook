@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 # --- Topic ---
@@ -241,6 +241,7 @@ class SettingsUpdate(BaseModel):
     digest_time: Optional[str] = None   # HH:MM
     ollama_model: Optional[str] = None
     fetch_interval: Optional[int] = None
+    article_retention_days: Optional[int] = Field(default=None, ge=1, le=365)
 
     @field_validator("digest_time")
     @classmethod
@@ -270,6 +271,7 @@ class SettingsResponse(BaseModel):
     digest_time: str
     ollama_model: str
     fetch_interval: int
+    article_retention_days: int
 
 
 # --- Mute Filters ---

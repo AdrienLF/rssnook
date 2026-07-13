@@ -62,7 +62,8 @@ async def init_db():
             INSERT OR IGNORE INTO settings(key, value) VALUES
                 ('digest_time', '07:00'),
                 ('ollama_model', 'qwen3.5:9b'),
-                ('fetch_interval', '3600')
+                ('fetch_interval', '3600'),
+                ('article_retention_days', '14')
         """))
 
         # Column migrations for existing databases (SQLite has no IF NOT EXISTS for ALTER)

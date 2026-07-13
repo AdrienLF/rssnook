@@ -1,12 +1,13 @@
 import asyncio
 import logging
+from datetime import datetime, timedelta, timezone
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ..database import SessionLocal
-from ..models import Feed, Setting
+from ..models import Article, Feed, Setting
 
 logger = logging.getLogger(__name__)
 scheduler = AsyncIOScheduler()
@@ -42,6 +43,23 @@ async def _run_daily_digest():
         logger.error(f"Digest generation error: {e}")
 
 
+async def _prune_old_articles():
+    retention_days = int(await _get_setting("article_retention_days", "14"))
+    # fetched_at is stored naive-UTC by SQLite
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=retention_days)).replace(tzinfo=None)
+    async with SessionLocal() as db:
+        result = await db.execute(
+            delete(Article).where(
+                Article.fetched_at < cutoff,
+                Article.is_bookmarked.is_(False),
+                Article.is_saved.is_(False),
+            )
+        )
+        await db.commit()
+        if result.rowcount:
+            logger.info(f"Pruned {result.rowcount} articles older than {retention_days} days")
+
+
 async def _get_setting(key: str, default: str) -> str:
     async with SessionLocal() as db:
         row = await db.get(Setting, key)
@@ -65,6 +83,13 @@ async def start_scheduler():
         _run_daily_digest,
         CronTrigger(hour=int(hour), minute=int(minute)),
         id="daily_digest",
+        replace_existing=True,
+    )
+
+    scheduler.add_job(
+        _prune_old_articles,
+        CronTrigger(hour=3, minute=0),
+        id="prune_articles",
         replace_existing=True,
     )
 

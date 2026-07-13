@@ -6,7 +6,7 @@
 
   app.activeView = 'settings';
 
-  let cfg = $state({ digest_time: '07:00', ollama_model: 'qwen3.5:9b', fetch_interval: 3600 });
+  let cfg = $state({ digest_time: '07:00', ollama_model: 'qwen3.5:9b', fetch_interval: 3600, article_retention_days: 14 });
   let saving = $state(false);
   let saved = $state(false);
   let editingFeed = $state(null);
@@ -235,6 +235,22 @@
             step="300"
             bind:value={cfg.fetch_interval}
           />
+        </div>
+
+        <div>
+          <label class="block text-xs text-zinc-400 mb-1.5" for="retention-days">
+            Article retention (days)
+          </label>
+          <input
+            id="retention-days"
+            class="input"
+            type="number"
+            min="1"
+            max="365"
+            step="1"
+            bind:value={cfg.article_retention_days}
+          />
+          <p class="text-xs text-zinc-600 mt-1">Bookmarked and Read Later articles are kept forever.</p>
         </div>
       </div>
 
