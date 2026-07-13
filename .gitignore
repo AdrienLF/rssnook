@@ -26,3 +26,7 @@ Thumbs.db
 
 # Editor / tooling
 .claude/
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
