@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>Read Later · Readr</title>
+  <title>Read Later · rssnook</title>
 </svelte:head>
 
 <ArticleList savedOnly={true} />

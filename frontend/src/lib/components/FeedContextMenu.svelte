@@ -1,5 +1,5 @@
 <script>
-  import { Check, FolderInput, X, Loader2, RefreshCw, Trash2 } from 'lucide-svelte';
+  import { Check, FolderInput, X, Loader2, RefreshCw, Trash2 } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { feeds as feedsApi } from '$lib/api.js';
 

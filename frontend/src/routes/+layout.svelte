@@ -1,7 +1,7 @@
 <script>
   import '../app.css';
   import { onMount } from 'svelte';
-  import { Menu, X } from 'lucide-svelte';
+  import { Menu, X } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import Sidebar from '$lib/components/Sidebar.svelte';
   import ArticleReader from '$lib/components/ArticleReader.svelte';

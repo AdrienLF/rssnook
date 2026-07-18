@@ -43,7 +43,7 @@ def is_safe_url(url: str) -> bool:
         return False
 
 REDDIT_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; RSS reader)"
+    "User-Agent": "rssnook/1.0 (+https://github.com/AdrienLF/rssnook)"
 }
 
 

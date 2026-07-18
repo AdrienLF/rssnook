@@ -1,5 +1,5 @@
 <script>
-  import { Home, Bookmark, Search, Zap, Settings } from 'lucide-svelte';
+  import { Home, Bookmark, Search, Zap, Settings } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
 
   const TABS = [

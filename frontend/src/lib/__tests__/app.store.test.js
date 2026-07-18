@@ -18,6 +18,9 @@ vi.mock('$lib/api.js', () => ({
       { id: 11, name: 'Finance', color: '#f59e0b', feed_count: 0 },
     ]),
   },
+  savedSearches: {
+    list: vi.fn().mockResolvedValue([]),
+  },
 }));
 
 // Import AFTER mocking

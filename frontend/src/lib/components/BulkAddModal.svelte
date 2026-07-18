@@ -1,5 +1,5 @@
 <script>
-  import { X, Upload, Sparkles, Trash2, ChevronDown, Loader2 } from 'lucide-svelte';
+  import { X, Upload, Sparkles, Trash2, ChevronDown, Loader2 } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { feeds as feedsApi } from '$lib/api.js';
 

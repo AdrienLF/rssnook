@@ -1,5 +1,5 @@
 <script>
-  import { X, Rss, Plus } from 'lucide-svelte';
+  import { X, Rss, Plus } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { feeds as feedsApi, topics as topicsApi } from '$lib/api.js';
 

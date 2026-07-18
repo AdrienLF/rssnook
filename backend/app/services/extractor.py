@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; RSSReader/1.0; +https://github.com/local/rss-reader)"
+    "User-Agent": "rssnook/1.0 (+https://github.com/AdrienLF/rssnook)"
 }
 
 

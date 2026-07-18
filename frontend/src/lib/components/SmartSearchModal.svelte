@@ -1,5 +1,5 @@
 <script>
-  import { X, Plus } from 'lucide-svelte';
+  import { X, Plus } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { savedSearches as savedSearchesApi } from '$lib/api.js';
 
@@ -40,6 +40,7 @@
   <div
     class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 animate-fade-in"
     onclick={(e) => e.target === e.currentTarget && close()}
+    onkeydown={(e) => e.key === 'Escape' && close()}
     role="dialog"
     tabindex="-1"
     aria-modal="true"

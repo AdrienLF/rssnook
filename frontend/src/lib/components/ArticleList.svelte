@@ -3,7 +3,7 @@
   import { articles as articlesApi, savedSearches as savedSearchesApi } from '$lib/api.js';
   import { app } from '$lib/stores/app.svelte.js';
   import ArticleCard from './ArticleCard.svelte';
-  import { RefreshCw, AlignJustify, List, Grid2X2, LayoutGrid, TrendingUp } from 'lucide-svelte';
+  import { RefreshCw, AlignJustify, List, Grid2X2, LayoutGrid, TrendingUp } from '@lucide/svelte';
 
   // Infinite scroll sentinel
   let sentinelEl = $state(null);

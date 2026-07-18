@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>Bookmarks · Readr</title>
+  <title>Bookmarks · rssnook</title>
 </svelte:head>
 
 <ArticleList bookmarksOnly={true} />

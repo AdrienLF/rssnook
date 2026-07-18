@@ -1,6 +1,6 @@
 <script>
   import { app } from '$lib/stores/app.svelte.js';
-  import { BookOpen, Rss, Keyboard, Filter, Download, Zap, Youtube, Headphones, Globe, Tag } from 'lucide-svelte';
+  import { BookOpen, Rss, Keyboard, Filter, Download, Zap, TvMinimalPlay, Headphones, Globe, Tag } from '@lucide/svelte';
 
   app.activeView = 'docs';
 
@@ -38,7 +38,7 @@
 </script>
 
 <svelte:head>
-  <title>Docs · Readr</title>
+  <title>Docs · rssnook</title>
 </svelte:head>
 
 <div class="flex h-full overflow-hidden">
@@ -63,7 +63,7 @@
       <div class="flex items-center gap-3">
         <BookOpen size={24} class="text-violet-400 shrink-0" />
         <div>
-          <h1 class="text-2xl font-bold text-zinc-100">Readr Documentation</h1>
+          <h1 class="text-2xl font-bold text-zinc-100">rssnook Documentation</h1>
           <p class="text-sm text-zinc-500 mt-0.5">Self-hosted RSS reader with AI digest and full-text extraction.</p>
         </div>
       </div>
@@ -74,7 +74,7 @@
           <Rss size={16} class="text-violet-400" /> Getting Started
         </h2>
         <div class="space-y-3 text-sm text-zinc-400 leading-relaxed">
-          <p>Readr is a self-hosted RSS reader. Once running, open it in your browser at <code class="text-violet-300 bg-zinc-800/60 px-1 rounded">http://localhost</code> (or your Tailscale address).</p>
+          <p>rssnook is a self-hosted RSS reader. Once running, open it in your browser at <code class="text-violet-300 bg-zinc-800/60 px-1 rounded">http://localhost:7755</code> (or your private network address on port 7755).</p>
           <ol class="list-decimal list-inside space-y-2 ml-1">
             <li>Click <strong class="text-zinc-300">Add Feed</strong> in the sidebar to subscribe to your first feed.</li>
             <li>Optionally create <strong class="text-zinc-300">Topics</strong> to group your feeds by theme.</li>
@@ -90,7 +90,7 @@
           <Globe size={16} class="text-violet-400" /> Adding Feeds
         </h2>
         <div class="space-y-3 text-sm text-zinc-400 leading-relaxed">
-          <p>Paste any URL into the <strong class="text-zinc-300">Add Feed</strong> dialog. Readr will auto-detect whether it's a direct RSS/Atom feed or a regular website (in which case it scans the page for a feed link).</p>
+          <p>Paste any URL into the <strong class="text-zinc-300">Add Feed</strong> dialog. rssnook will auto-detect whether it's a direct RSS/Atom feed or a regular website (in which case it scans the page for a feed link).</p>
           <p>You can assign one or more Topics at the time of adding a feed, or create a new topic inline by typing a name and pressing Enter.</p>
           <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 space-y-1.5">
             <p class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">What's supported</p>
@@ -126,14 +126,14 @@
       <!-- Feed URL Formats -->
       <section id="feed-formats">
         <h2 class="text-base font-semibold text-zinc-200 mb-4 flex items-center gap-2">
-          <Youtube size={16} class="text-violet-400" /> Feed URL Formats
+          <TvMinimalPlay size={16} class="text-violet-400" /> Feed URL Formats
         </h2>
         <div class="space-y-4 text-sm text-zinc-400">
 
           <div>
             <p class="text-zinc-300 font-medium mb-1.5">Reddit subreddits</p>
             <code class="block bg-zinc-900/70 border border-zinc-800 rounded px-3 py-2 text-xs text-violet-300">https://www.reddit.com/r/programming</code>
-            <p class="text-xs mt-1">Paste the subreddit URL directly — Readr appends <code class="text-zinc-400">.rss</code> automatically.</p>
+            <p class="text-xs mt-1">Paste the subreddit URL directly — rssnook appends <code class="text-zinc-400">.rss</code> automatically.</p>
           </div>
 
           <div>
@@ -145,12 +145,12 @@
           <div>
             <p class="text-zinc-300 font-medium mb-1.5">Bluesky accounts (via RSSHub)</p>
             <code class="block bg-zinc-900/70 border border-zinc-800 rounded px-3 py-2 text-xs text-violet-300">http://rsshub:1200/bluesky/profile/handle.bsky.social</code>
-            <p class="text-xs mt-1">RSSHub is bundled with Readr and accessible internally. Replace <code class="text-zinc-400">handle</code> with the account handle.</p>
+            <p class="text-xs mt-1">RSSHub is bundled with rssnook and accessible internally. Replace <code class="text-zinc-400">handle</code> with the account handle.</p>
           </div>
 
           <div>
             <p class="text-zinc-300 font-medium mb-1.5">Podcasts</p>
-            <p class="text-xs">Paste any podcast RSS feed URL. Readr detects audio enclosures and shows a <span class="text-violet-400 font-semibold">PODCAST</span> badge on episodes. A mini audio player appears in the article reader.</p>
+            <p class="text-xs">Paste any podcast RSS feed URL. rssnook detects audio enclosures and shows a <span class="text-violet-400 font-semibold">PODCAST</span> badge on episodes. A mini audio player appears in the article reader.</p>
           </div>
         </div>
       </section>
@@ -211,9 +211,9 @@
           <Download size={16} class="text-violet-400" /> OPML Import / Export
         </h2>
         <div class="space-y-3 text-sm text-zinc-400 leading-relaxed">
-          <p>OPML is the standard format for sharing feed lists. Readr supports both import and export from <strong class="text-zinc-300">Settings → Import / Export</strong>.</p>
+          <p>OPML is the standard format for sharing feed lists. rssnook supports both import and export from <strong class="text-zinc-300">Settings → Import / Export</strong>.</p>
           <ul class="list-disc list-inside space-y-1.5 ml-1">
-            <li><strong class="text-zinc-300">Export</strong> — downloads <code class="text-zinc-400">readr-feeds.opml</code> with feeds grouped by their topics as OPML folders.</li>
+            <li><strong class="text-zinc-300">Export</strong> — downloads <code class="text-zinc-400">rssnook-feeds.opml</code> with feeds grouped by their topics as OPML folders.</li>
             <li><strong class="text-zinc-300">Import</strong> — accepts any OPML file. OPML folders become Topics automatically. Duplicate feed URLs are skipped.</li>
           </ul>
           <p>Newly imported feeds are queued for an immediate article fetch in the background.</p>
@@ -226,7 +226,7 @@
           <Zap size={16} class="text-violet-400" /> AI Digest &amp; Summary
         </h2>
         <div class="space-y-3 text-sm text-zinc-400 leading-relaxed">
-          <p>Readr uses a local <a href="https://ollama.com" target="_blank" rel="noopener" class="text-violet-400 hover:underline">Ollama</a> instance for AI features. No data leaves your machine.</p>
+          <p>rssnook uses a local <a href="https://ollama.com" target="_blank" rel="noopener" class="text-violet-400 hover:underline">Ollama</a> instance for AI features. Article text and prompts stay inside the Ollama service you configure.</p>
           <p class="font-medium text-zinc-300">Daily Digest</p>
           <ul class="list-disc list-inside space-y-1.5 ml-1">
             <li>Generated daily at <strong class="text-zinc-300">07:00</strong> (configurable in Settings).</li>
@@ -240,8 +240,8 @@
           </ul>
           <div class="bg-zinc-900/60 border border-zinc-800 rounded-lg p-4 text-xs space-y-2">
             <p class="font-medium text-zinc-300">Pulling a model manually</p>
-            <code class="block text-violet-300">docker exec readr-ollama-1 ollama pull qwen3.5:9b</code>
-            <p class="text-zinc-500">The model must be pulled before Readr can generate digests or summaries.</p>
+            <code class="block text-violet-300">docker compose exec ollama ollama pull qwen3.5:9b</code>
+            <p class="text-zinc-500">The model must be pulled before rssnook can generate digests or summaries.</p>
           </div>
         </div>
       </section>

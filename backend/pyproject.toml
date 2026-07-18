@@ -1,6 +1,8 @@
 [project]
-name = "rss-reader-backend"
-version = "0.1.0"
+name = "rssnook-backend"
+version = "1.0.0"
+description = "The FastAPI backend for rssnook, a self-hosted RSS reader."
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115.0",
@@ -19,6 +21,11 @@ dependencies = [
     "lxml-html-clean>=0.4.0",
     "greenlet>=3.3.2",
 ]
+
+[project.urls]
+Homepage = "https://github.com/AdrienLF/rssnook"
+Repository = "https://github.com/AdrienLF/rssnook"
+Issues = "https://github.com/AdrienLF/rssnook/issues"
 
 [dependency-groups]
 dev = [

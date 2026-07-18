@@ -1,6 +1,6 @@
 <script>
   import { formatDistanceToNow } from 'date-fns';
-  import { Bookmark, BookmarkCheck, BookmarkPlus, ArrowUp, MessageSquare } from 'lucide-svelte';
+  import { Bookmark, BookmarkCheck, BookmarkPlus, ArrowUp, MessageSquare } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { articles as articlesApi } from '$lib/api.js';
 

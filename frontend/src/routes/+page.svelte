@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-  <title>Readr</title>
+  <title>rssnook</title>
 </svelte:head>
 
 <ArticleList {topicId} {feedId} {smartSearchId} />
