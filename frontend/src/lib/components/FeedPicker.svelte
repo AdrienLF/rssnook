@@ -1,5 +1,5 @@
 <script>
-  import { ChevronDown, Search, X, Rss } from 'lucide-svelte';
+  import { ChevronDown, Search, X, Rss } from '@lucide/svelte';
 
   let { feeds = [], value = null, onchange } = $props();
 

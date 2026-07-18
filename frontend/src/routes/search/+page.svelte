@@ -1,5 +1,6 @@
 <script>
-  import { Search } from 'lucide-svelte';
+  import { onMount } from 'svelte';
+  import { Search } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { articles as articlesApi } from '$lib/api.js';
   import ArticleCard from '$lib/components/ArticleCard.svelte';
@@ -13,8 +14,11 @@
   let hasMore = $state(false);
   let loading = $state(false);
   let searched = $state(false);
+  let searchInput;
 
   let debounce;
+
+  onMount(() => searchInput?.focus());
 
   function onInput() {
     clearTimeout(debounce);
@@ -54,7 +58,7 @@
 </script>
 
 <svelte:head>
-  <title>Search · Readr</title>
+  <title>Search · rssnook</title>
 </svelte:head>
 
 <div class="flex flex-col h-full">
@@ -67,9 +71,9 @@
         class="input pl-9"
         type="search"
         placeholder="Search articles, titles, content…"
+        bind:this={searchInput}
         bind:value={query}
         oninput={onInput}
-        autofocus={true}
       />
     </div>
   </div>

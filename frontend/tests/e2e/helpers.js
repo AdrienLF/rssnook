@@ -3,7 +3,8 @@
  * All API calls go through the backend directly to seed test data cleanly.
  */
 
-const API = process.env.BASE_URL ? `${process.env.BASE_URL}/api` : 'http://localhost/api';
+const BASE_URL = (process.env.BASE_URL || 'http://localhost:7755').replace(/\/$/, '');
+const API = `${BASE_URL}/api`;
 
 export async function apiFetch(method, path, body) {
   const res = await fetch(`${API}${path}`, {

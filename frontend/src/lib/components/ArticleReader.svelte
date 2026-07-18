@@ -7,7 +7,7 @@
     X, ExternalLink, Bookmark, BookmarkCheck, BookmarkPlus, MessageSquare,
     Zap, Tag, StickyNote, Globe, ThumbsUp, ThumbsDown, Highlighter, Cpu,
     ChevronLeft, ChevronRight, ArrowUp,
-  } from 'lucide-svelte';
+  } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { articles as articlesApi, tags as tagsApi } from '$lib/api.js';
   import CommentThread from './CommentThread.svelte';
@@ -276,6 +276,9 @@
     class="fixed z-[100] flex items-center gap-1 p-1.5 rounded-lg bg-zinc-800 border border-zinc-700 shadow-xl"
     style="left: {pickerX}px; top: {pickerY}px; transform: translate(-50%, -100%);"
     onmouseleave={() => { if (!window.getSelection()?.toString().trim()) pickerVisible = false; }}
+    role="toolbar"
+    aria-label="Highlight color"
+    tabindex="0"
   >
     {#each HIGHLIGHT_COLORS as c}
       <button

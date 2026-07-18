@@ -1,6 +1,5 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 from .database import init_db, _seed_feeds_if_empty
 from .services.scheduler import start_scheduler, stop_scheduler
@@ -16,13 +15,11 @@ async def lifespan(app: FastAPI):
     await stop_scheduler()
 
 
-app = FastAPI(title="RSS Reader", lifespan=lifespan)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+app = FastAPI(
+    title="rssnook",
+    description="A self-hosted RSS reader with full-text extraction and local AI digests.",
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.include_router(feeds.router, prefix="/api/feeds", tags=["feeds"])

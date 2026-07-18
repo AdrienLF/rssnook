@@ -345,7 +345,7 @@ async def export_opml(db: AsyncSession = Depends(get_db)):
 
     root = ET.Element("opml", version="2.0")
     head = ET.SubElement(root, "head")
-    ET.SubElement(head, "title").text = "Readr Feeds"
+    ET.SubElement(head, "title").text = "rssnook Feeds"
     body = ET.SubElement(root, "body")
 
     # Feeds grouped by topic
@@ -368,7 +368,7 @@ async def export_opml(db: AsyncSession = Depends(get_db)):
 
     xml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode")
     return Response(content=xml_str, media_type="application/xml",
-                    headers={"Content-Disposition": "attachment; filename=readr-feeds.opml"})
+                    headers={"Content-Disposition": "attachment; filename=rssnook-feeds.opml"})
 
 
 @router.post("/opml", status_code=202)

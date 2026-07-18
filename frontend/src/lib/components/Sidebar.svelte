@@ -1,5 +1,5 @@
 <script>
-  import { Home, Bookmark, BookmarkCheck, Search, Zap, Settings, Plus, Rss, RefreshCw, ChevronRight, BookOpen, TrendingUp, Sparkles, Trash2, Upload, Loader2 } from 'lucide-svelte';
+  import { Home, Bookmark, BookmarkCheck, Search, Zap, Settings, Plus, Rss, RefreshCw, ChevronRight, BookOpen, TrendingUp, Sparkles, Trash2, Upload, Loader2 } from '@lucide/svelte';
   import { savedSearches as savedSearchesApi } from '$lib/api.js';
   import { app } from '$lib/stores/app.svelte.js';
   import { feeds as feedsApi, entities as entitiesApi } from '$lib/api.js';
@@ -190,7 +190,7 @@
   <div class="px-4 py-4 border-b border-zinc-800 shrink-0">
     <div class="flex items-center gap-2">
       <Rss size={16} class="text-violet-400" />
-      <span class="font-bold text-sm tracking-tight">Readr</span>
+      <span class="font-bold text-sm tracking-tight">rssnook</span>
     </div>
   </div>
 
@@ -300,8 +300,7 @@
 
       <!-- Topic row (drop target) -->
       <div class="mx-2">
-        <button
-          onclick={() => app.selectTopic(topic.id)}
+        <div
           ondragover={(e) => onTopicDragOver(topic.id, e)}
           ondragleave={(e) => onTopicDragLeave(topic.id, e)}
           ondrop={(e) => onTopicDrop(topic.id, e)}
@@ -311,14 +310,15 @@
                    : app.selectedTopicId === topic.id && !app.selectedFeedId
                      ? 'bg-zinc-800 text-zinc-100'
                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'}"
+          role="group"
+          aria-label={`${topic.name} topic`}
         >
           <!-- Expand chevron -->
           {#if topicFeeds.length > 0}
             <button
               onclick={(e) => toggleExpanded(topic.id, e)}
               class="p-0.5 rounded hover:bg-zinc-700 transition-colors shrink-0 text-zinc-600 hover:text-zinc-300"
-              tabindex="-1"
-              aria-label={isExpanded ? 'Collapse' : 'Expand'}
+              aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${topic.name}`}
             >
               <ChevronRight size={13} class="transition-transform duration-150 {isExpanded ? 'rotate-90' : ''}" />
             </button>
@@ -326,12 +326,14 @@
             <span class="w-5 shrink-0"></span>
           {/if}
 
-          <span class="w-2 h-2 rounded-full shrink-0" style="background-color: {topic.color}"></span>
-          <span class="flex-1 truncate text-left text-[13px]">{topic.name}</span>
-          {#if topicUnread > 0}
-            <span class="text-xs text-zinc-500 tabular-nums shrink-0">{topicUnread > 9999 ? '9999+' : topicUnread}</span>
-          {/if}
-        </button>
+          <button onclick={() => app.selectTopic(topic.id)} class="flex-1 flex items-center gap-2 min-w-0">
+            <span class="w-2 h-2 rounded-full shrink-0" style="background-color: {topic.color}"></span>
+            <span class="flex-1 truncate text-left text-[13px]">{topic.name}</span>
+            {#if topicUnread > 0}
+              <span class="text-xs text-zinc-500 tabular-nums shrink-0">{topicUnread > 9999 ? '9999+' : topicUnread}</span>
+            {/if}
+          </button>
+        </div>
 
         <!-- Feed rows under topic -->
         {#if isExpanded && topicFeeds.length > 0}
@@ -417,6 +419,8 @@
         ondragover={onUncatDragOver}
         ondragleave={onUncatDragLeave}
         ondrop={onUncatDrop}
+        role="group"
+        aria-label="Uncategorized feeds"
       >
         <span class="text-[11px] font-semibold text-zinc-600 uppercase tracking-wider">
           {dragFeedId ? 'Drop here to uncategorize' : 'Feeds'}

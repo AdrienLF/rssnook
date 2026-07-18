@@ -1,5 +1,5 @@
 <script>
-  import { X, Plus } from 'lucide-svelte';
+  import { X, Plus } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { topics as topicsApi } from '$lib/api.js';
 

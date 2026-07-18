@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { Settings, Trash2, RefreshCw, Plus, Edit2, Check, Upload, Download, X, Tag, Zap, ToggleLeft, ToggleRight, AlertCircle, CheckCircle2 } from 'lucide-svelte';
+  import { Settings, Trash2, RefreshCw, Plus, Edit2, Check, Upload, Download, X, Tag, Zap, ToggleLeft, ToggleRight, AlertCircle, CheckCircle2 } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { settings as settingsApi, feeds as feedsApi, topics as topicsApi, filters as filtersApi, tags as tagsApi, rules as rulesApi } from '$lib/api.js';
 
@@ -112,7 +112,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'readr-feeds.opml';
+    a.download = 'rssnook-feeds.opml';
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -196,7 +196,7 @@
 </script>
 
 <svelte:head>
-  <title>Settings · Readr</title>
+  <title>Settings · rssnook</title>
 </svelte:head>
 
 <div data-testid="settings-scroll" class="flex-1 overflow-y-auto px-4 py-6">
@@ -295,7 +295,7 @@
           <p class="text-xs text-red-400/80 mt-1">{ollamaError || 'Cannot reach Ollama. Is the container running?'}</p>
         {:else}
           <p class="text-xs text-zinc-600 mt-1">
-            Pull a model: <code class="text-zinc-500">docker exec readr-ollama-1 ollama pull qwen3.5:9b</code>
+            Pull a model: <code class="text-zinc-500">docker compose exec ollama ollama pull qwen3.5:9b</code>
           </p>
         {/if}
       </div>
@@ -543,8 +543,8 @@
         </div>
         <div class="grid grid-cols-3 gap-2">
           <div>
-            <label class="block text-xs text-zinc-400 mb-1">Field</label>
-            <select class="input text-sm" bind:value={newRuleField}>
+            <label class="block text-xs text-zinc-400 mb-1" for="rule-field">Field</label>
+            <select id="rule-field" class="input text-sm" bind:value={newRuleField}>
               <option value="title">Title</option>
               <option value="author">Author</option>
               <option value="excerpt">Excerpt</option>
@@ -552,8 +552,8 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs text-zinc-400 mb-1">Condition</label>
-            <select class="input text-sm" bind:value={newRuleOp}>
+            <label class="block text-xs text-zinc-400 mb-1" for="rule-condition">Condition</label>
+            <select id="rule-condition" class="input text-sm" bind:value={newRuleOp}>
               <option value="contains">contains</option>
               <option value="not_contains">doesn't contain</option>
               <option value="equals">equals</option>
@@ -561,14 +561,14 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs text-zinc-400 mb-1">Value</label>
-            <input class="input text-sm" type="text" placeholder="e.g. AI, GPT" bind:value={newRuleValue} />
+            <label class="block text-xs text-zinc-400 mb-1" for="rule-value">Value</label>
+            <input id="rule-value" class="input text-sm" type="text" placeholder="e.g. AI, GPT" bind:value={newRuleValue} />
           </div>
         </div>
         <div class="flex gap-2 items-end">
           <div class="flex-1">
-            <label class="block text-xs text-zinc-400 mb-1">Action</label>
-            <select class="input text-sm" bind:value={newRuleAction}>
+            <label class="block text-xs text-zinc-400 mb-1" for="rule-action">Action</label>
+            <select id="rule-action" class="input text-sm" bind:value={newRuleAction}>
               <option value="mark_read">Mark as read</option>
               <option value="save">Save for later</option>
               <option value="bookmark">Bookmark</option>
@@ -578,8 +578,8 @@
           </div>
           {#if newRuleAction === 'tag'}
             <div class="flex-1">
-              <label class="block text-xs text-zinc-400 mb-1">Tag</label>
-              <select class="input text-sm" bind:value={newRuleTagId}>
+              <label class="block text-xs text-zinc-400 mb-1" for="rule-tag">Tag</label>
+              <select id="rule-tag" class="input text-sm" bind:value={newRuleTagId}>
                 {#each allTags as t (t.id)}
                   <option value={t.id}>{t.name}</option>
                 {/each}

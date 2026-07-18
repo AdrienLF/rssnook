@@ -1,5 +1,5 @@
 <script>
-  import { X } from 'lucide-svelte';
+  import { X } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
 
   const sections = [
@@ -33,6 +33,7 @@
   <div
     class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 animate-fade-in"
     onclick={(e) => e.target === e.currentTarget && (app.shortcutsVisible = false)}
+    onkeydown={(e) => e.key === 'Escape' && (app.shortcutsVisible = false)}
     role="dialog"
     aria-modal="true"
     aria-label="Keyboard shortcuts"

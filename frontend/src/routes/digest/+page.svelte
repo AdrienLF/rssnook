@@ -3,7 +3,7 @@
   import { format } from 'date-fns';
   import { marked } from 'marked';
   import { sanitize } from '$lib/sanitize.js';
-  import { Zap, RefreshCw, ChevronDown, AlertCircle } from 'lucide-svelte';
+  import { Zap, RefreshCw, ChevronDown, AlertCircle } from '@lucide/svelte';
   import { app } from '$lib/stores/app.svelte.js';
   import { digests as digestsApi } from '$lib/api.js';
 
@@ -63,7 +63,7 @@
 </script>
 
 <svelte:head>
-  <title>Digest · Readr</title>
+  <title>Digest · rssnook</title>
 </svelte:head>
 
 <div class="flex flex-col h-full overflow-y-auto">

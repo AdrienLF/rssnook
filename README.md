@@ -1,99 +1,128 @@
-# Readr
+# rssnook
 
-A self-hosted, single-user RSS reader with full-text article fetching, Reddit comment threads, and a daily AI digest — no cloud, no tracking, no algorithmic interference.
+A private, self-hosted RSS reader with full-text extraction, powerful organization, and local AI digests. Your feeds, reading history, notes, and model prompts stay under your control.
 
-![Stack](https://img.shields.io/badge/backend-FastAPI-009688?style=flat-square) ![Stack](https://img.shields.io/badge/frontend-SvelteKit-FF3E00?style=flat-square) ![Stack](https://img.shields.io/badge/db-SQLite-003B57?style=flat-square) ![Stack](https://img.shields.io/badge/deploy-Docker_Compose-2496ED?style=flat-square)
+[![CI](https://github.com/AdrienLF/rssnook/actions/workflows/ci.yml/badge.svg)](https://github.com/AdrienLF/rssnook/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Docker Compose](https://img.shields.io/badge/deploy-Docker%20Compose-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
 
-![Readr screenshot](screenshot.png)
+![rssnook showing the article feed](screenshot.jpg)
 
-> **Heads up:** This project was vibe-coded — built iteratively with AI assistance, not architected upfront. I use it every day as my primary RSS reader and it works well for me, but it hasn't been battle-tested by a wide audience. Expect rough edges. Issues and PRs are welcome.
+## Why rssnook?
+
+rssnook gives you one calm place to follow RSS and Atom feeds, Reddit communities, podcasts, and RSSHub-compatible sources. It fetches readable article content, keeps search and reading state in SQLite, and can use a local Ollama model for summaries and daily digests. There is no hosted account, cloud AI dependency, tracking, or recommendation algorithm.
 
 ## Features
 
-- **Full-text reading** — fetches and stores complete article content server-side via trafilatura
-- **Topic organization** — organize feeds into topics (many-to-many); filter your reading by topic
-- **Bulk feed import with AI classification** — paste a list of URLs (or any text containing URLs) and let the local LLM auto-classify them into topics, with a review step before import
-- **Inline topic creation** — create new topics on the fly when adding a feed, no separate modal needed
-- **Reddit first-class** — Reddit posts include live threaded comment trees, upvotes, and comment counts
-- **Daily AI digest** — local LLM (Ollama + Qwen3.5:9b) summarizes the day's stories per topic at a configurable time
-- **Article summarization** — on-demand per-article summaries via local LLM, cached after first generation
-- **Named entity extraction** — extract people, organizations, places, and topics from articles; view trending entities
-- **Read tracking & bookmarks** — per-article state, persisted in SQLite
-- **Read later** — separate read-later list, distinct from bookmarks
-- **Tags & automation rules** — color-coded tags and fetch-time rules (auto-bookmark, auto-tag, auto-mute)
-- **Mute filters** — drop articles matching patterns (plain text or regex) at fetch time, globally or per-feed
-- **Smart searches** — saved search queries with automatic article matching
-- **Full-text search** — SQLite FTS5, BM25 ranking, no external service needed
-- **OPML import/export** — standard feed list exchange; OPML folders become topics on import
-- **Article highlights & notes** — highlight text passages and attach private notes to any article
-- **Priority scoring** — articles scored based on thumbs-up/down signals per feed
-- **Mobile-friendly** — responsive UI with bottom navigation, accessible over Tailscale from any device
-- **Self-contained** — runs entirely in Docker Compose; all data stays local
+- Full-text article extraction with a focused reader view
+- Topic and feed organization, drag-and-drop categorization, and OPML import/export
+- Read state, bookmarks, Read Later, highlights, private notes, and tags
+- Saved smart searches, SQLite FTS5 search, named entities, and trending topics
+- Fetch-time automation rules, mute filters, and article-priority signals
+- Reddit comment threads and podcast audio playback
+- Daily topic digests and on-demand article summaries through local Ollama
+- Responsive desktop and mobile layouts with keyboard navigation
+- A self-contained Docker Compose deployment with persistent local storage
 
-## Stack
+## Quick start
 
-| Layer | Technology |
-|---|---|
-| Backend | Python 3.12, FastAPI, SQLAlchemy 2 (async), aiosqlite |
-| Frontend | SvelteKit 2, Svelte 5 (runes), TailwindCSS 3 |
-| Database | SQLite with FTS5 full-text search |
-| LLM | Ollama (local inference, GPU or CPU) |
-| Feed conversion | RSSHub (Bluesky, YouTube, and 400+ other sources) |
-| Deployment | Docker Compose + nginx reverse proxy |
+### Requirements
 
-## Quick Start
+- Docker with Compose v2
+- Enough disk space for the containers and your chosen Ollama model; the default model requires several gigabytes
+- An NVIDIA container runtime only if you want GPU acceleration on Linux or WSL2
+
+### Install
 
 ```bash
-git clone https://github.com/AdrienLF/readr
-cd readr
+git clone https://github.com/AdrienLF/rssnook.git
+cd rssnook
 
-# Pull the Ollama model (first run only)
+# Start Ollama and download the default model once.
 docker compose up -d ollama
-docker exec -it readr-ollama-1 ollama pull qwen3.5:9b
+docker compose exec ollama ollama pull qwen3.5:9b
 
-# Start everything (auto-detects GPU)
+# Start rssnook. NVIDIA GPU support is detected automatically.
 bash start.sh
 ```
 
-Open `http://localhost:7755` in your browser.
+Open [http://localhost:7755](http://localhost:7755).
 
-### GPU support
+On macOS, you can instead double-click `rssnook.command`. It starts Docker Desktop when needed, builds the app, downloads the configured model on first run, and opens rssnook in your browser.
 
-The `start.sh` script auto-detects `nvidia-smi` and enables GPU passthrough if available (requires NVIDIA Container Toolkit or Docker Desktop with WSL2 GPU support). To force CPU mode:
+To force CPU mode, run `docker compose up -d`. To stop the application, run `docker compose down`.
+
+## Updating and backups
 
 ```bash
-docker compose up -d
+git pull --ff-only
+docker compose up -d --build
 ```
 
-## Adding Feeds
+Application data lives in `./data`. Back up that directory while rssnook is stopped:
 
-| Source | URL format |
+```bash
+docker compose down
+cp -a data data.backup
+```
+
+Ollama models live in the Docker-managed `rssnook_ollama_data` volume and can be downloaded again, so they do not need to be part of an application-data backup.
+
+### Upgrading from earlier releases
+
+The rename is data-safe. On the first start, rssnook stops containers created under the former Compose project name and automatically moves the legacy `rss_reader.db` database to `rssnook.db` when the default database configuration is in use. Existing feeds, articles, settings, and reading history are preserved.
+
+## Adding feeds
+
+Paste a feed or website URL into **Add Feed**. rssnook discovers RSS and Atom links when a regular webpage is provided.
+
+| Source | Example |
 |---|---|
-| Any RSS/Atom feed | Direct feed URL |
-| Reddit subreddit | `https://www.reddit.com/r/{subreddit}.rss` |
-| Bluesky user | `http://rsshub:1200/bsky/user/{handle}` |
-| YouTube channel | `http://rsshub:1200/youtube/user/{username}` |
-| GitHub releases | `https://github.com/{user}/{repo}/releases.atom` |
+| RSS or Atom | `https://example.com/feed.xml` |
+| Reddit | `https://www.reddit.com/r/selfhosted` |
+| Bluesky through RSSHub | `http://rsshub:1200/bsky/profile/example.com` |
+| YouTube through RSSHub | `http://rsshub:1200/youtube/channel/CHANNEL_ID` |
+| GitHub releases | `https://github.com/owner/project/releases.atom` |
 
-RSSHub supports hundreds of additional sources — see [docs.rsshub.app](https://docs.rsshub.app).
+See the in-app **Docs** page for workflows, keyboard shortcuts, smart searches, and automation examples. RSSHub maintains its full route catalog at [docs.rsshub.app](https://docs.rsshub.app/).
 
 ## Configuration
 
-Settings are available through the UI (`/settings`) or via environment variables:
+Most settings are editable in **Settings** and persisted in SQLite.
 
 | Setting | Default | Description |
-|---|---|---|
-| `digest_time` | `07:00` | Daily digest generation time (HH:MM) |
-| `ollama_model` | `qwen3.5:9b` | Ollama model used for digests |
-| `fetch_interval` | `3600` | Feed poll interval in seconds |
+|---|---:|---|
+| Digest time | `07:00` | Daily digest generation time |
+| Ollama model | `qwen3.5:9b` | Model used for summaries and digests |
+| Feed refresh interval | `3600` | Seconds between feed refreshes |
+| Article retention | `14` | Days to retain ordinary articles; bookmarked and Read Later items are kept |
 
-Environment variables:
+Deployment settings can be supplied as environment variables:
 
 | Variable | Default |
 |---|---|
+| `DATABASE_URL` | `sqlite+aiosqlite:////app/data/rssnook.db` |
 | `OLLAMA_BASE_URL` | `http://ollama:11434` |
+| `OLLAMA_MODEL` | `qwen3.5:9b` |
 | `RSSHUB_BASE_URL` | `http://rsshub:1200` |
-| `DATABASE_URL` | `sqlite+aiosqlite:////app/data/rss_reader.db` |
+| `DIGEST_TIME` | `07:00` |
+| `FETCH_INTERVAL` | `3600` |
+
+Copy [`backend/.env.example`](backend/.env.example) when running the backend outside Docker. For Compose deployments, add overrides to the `backend.environment` section or provide an environment-specific Compose override.
+
+## Architecture
+
+| Layer | Technology |
+|---|---|
+| API and jobs | Python 3.12, FastAPI, SQLAlchemy, APScheduler |
+| Web app | SvelteKit 2, Svelte 5, Tailwind CSS |
+| Storage and search | SQLite, aiosqlite, FTS5 |
+| Article extraction | Trafilatura |
+| Local AI | Ollama |
+| Feed conversion | RSSHub |
+| Deployment | Docker Compose, nginx |
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for service boundaries, request flows, storage, and extension points.
 
 ## Development
 
@@ -101,63 +130,40 @@ Environment variables:
 
 ```bash
 cd backend
-uv sync
-uv run uvicorn app.main:app --reload  # dev server on :8000
-uv run pytest                          # run all tests
+uv sync --frozen
+uv run pytest
+uv run uvicorn app.main:app --reload
 ```
+
+The API and interactive OpenAPI documentation are available at [http://localhost:8000/docs](http://localhost:8000/docs) during local backend development.
 
 ### Frontend
 
 ```bash
 cd frontend
-npm install
-npm run dev    # dev server on :5173
-npm test       # unit tests (vitest)
+npm ci
+npm test
+npm run build
+npm run dev
 ```
 
-### Architecture
+End-to-end tests expect a running Compose stack:
 
-```
-readr/
-├── backend/
-│   └── app/
-│       ├── main.py          FastAPI app + lifespan
-│       ├── models.py        SQLAlchemy ORM models
-│       ├── schemas.py       Pydantic schemas
-│       ├── routers/         REST API endpoints
-│       └── services/
-│           ├── fetcher.py   Feed polling + Reddit normalization
-│           ├── extractor.py Full-text extraction (trafilatura)
-│           ├── scheduler.py    APScheduler (poll + digest cron)
-│           ├── llm.py          Ollama digest generation
-│           └── smart_search.py Saved-search matching
-└── frontend/
-    └── src/
-        ├── routes/          SvelteKit pages
-        └── lib/
-            ├── api.js       Typed fetch wrapper
-            ├── stores/      Svelte 5 reactive state
-            └── components/  UI components
+```bash
+cd frontend
+BASE_URL=http://localhost:7755 npm run test:e2e
 ```
 
-## Security
+## Security model
 
-Readr is designed for **local / private network use** (e.g. behind Tailscale). It has no authentication layer — anyone who can reach the port can use it. Do not expose it to the public internet.
+rssnook is a single-user application with no authentication layer. Run it only on localhost or a trusted private network such as Tailscale; do not expose port 7755 directly to the public internet.
 
-Protections in place:
-- **XSS** — all rendered HTML from feeds and LLM output is sanitized with DOMPurify
-- **SSRF** — feed URL validation blocks private IPs, loopback, link-local, and internal Docker hostnames
-- **ReDoS** — mute-filter regex patterns are validated against nested quantifiers
-- **Docker** — backend and frontend containers run as non-root users
-- **Nginx** — security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
+Feed and article HTML is sanitized before rendering, feed targets are validated, containers run the application as non-root users, and nginx adds baseline browser-security headers. Read [SECURITY.md](SECURITY.md) before deploying and use GitHub's private security-advisory form to report vulnerabilities.
 
-## Non-Goals
+## Contributing
 
-- Multi-user / auth (single-user by design)
-- Cloud sync or remote storage
-- Twitter/X integration
-- Public internet exposure (designed for a private network / Tailscale)
+Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains the development workflow and required checks. Participation is governed by the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-MIT
+rssnook is available under the [MIT License](LICENSE).
