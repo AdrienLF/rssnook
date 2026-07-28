@@ -13,7 +13,7 @@
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "@sveltejs/adapter-node": "^5.2.0",
-    "@sveltejs/kit": "^2.15.0",
+    "@sveltejs/kit": "^2.70.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@tailwindcss/typography": "^0.5.15",
     "@testing-library/jest-dom": "^6.6.0",
